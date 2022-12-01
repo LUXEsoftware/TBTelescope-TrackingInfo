@@ -19,20 +19,52 @@ TrackingInfo::TrackingInfo(Configuration& config, std::vector<std::shared_ptr<De
 void TrackingInfo::initialize() {
 
     // Read value from .conf file
-    config_.setDefault<double>("set_z_ref", 1000.);
+    config_.setDefault<double>("z_ref0", 0.0);
+    config_.setDefault<double>("z_ref1", 0.0);
+    config_.setDefault<double>("z_ref2", 0.0);
+    config_.setDefault<double>("z_ref3", 0.0);
+    config_.setDefault<double>("z_ref4", 0.0);
+    config_.setDefault<double>("z_ref5", 0.0);
 
-    z_ref  = config_.get<double>("set_z_ref");
-    z_dut = config_.get<double>("set_z_dut");
+    z_ref0_ = config_.get<double>("z_ref0");
+    z_ref1_ = config_.get<double>("z_ref1");
+    z_ref2_ = config_.get<double>("z_ref2");
+    z_ref3_ = config_.get<double>("z_ref3");
+    z_ref4_ = config_.get<double>("z_ref4");
+    z_ref5_ = config_.get<double>("z_ref5");
+    z_dut_ = config_.get<double>("z_dut");
 
     TDirectory* directory = getROOTDirectory();
     directory->cd();
-    Tracks = new TTree("Tracks","Tracking information");
-    Tracks->Branch("x_ref", &x_ref);
-    Tracks->Branch("y_ref", &y_ref);
-    Tracks->Branch("x_dut", &x_dut);
-    Tracks->Branch("y_dut", &y_dut);
+    Tracks = new TTree("Tracks","Telescope tracking information");
     Tracks->Branch("triggerid", &triggerId);
     Tracks->Branch("timestamp", &triggerTimestamp);
+    Tracks->Branch("x_dut", &x_dut);
+    Tracks->Branch("y_dut", &y_dut);
+    Tracks->Branch("x_tel5", &x_tel5);
+    Tracks->Branch("y_tel5", &y_tel5);
+    Tracks->Branch("x_tel0", &x_tel0);
+    Tracks->Branch("y_tel0", &y_tel0);
+    Tracks->Branch("x_tel1", &x_tel1);
+    Tracks->Branch("y_tel1", &y_tel1);
+    Tracks->Branch("x_tel2", &x_tel2);
+    Tracks->Branch("y_tel2", &y_tel2);
+    Tracks->Branch("x_tel3", &x_tel3);
+    Tracks->Branch("y_tel3", &y_tel3);
+    Tracks->Branch("x_tel4", &x_tel4);
+    Tracks->Branch("y_tel4", &y_tel4);
+    Tracks->Branch("x_res5", &x_res5);
+    Tracks->Branch("y_res5", &y_res5);
+    Tracks->Branch("x_res0", &x_res0);
+    Tracks->Branch("y_res0", &y_res0);
+    Tracks->Branch("x_res1", &x_res1);
+    Tracks->Branch("y_res1", &y_res1);
+    Tracks->Branch("x_res2", &x_res2);
+    Tracks->Branch("y_res2", &y_res2);
+    Tracks->Branch("x_res3", &x_res3);
+    Tracks->Branch("y_res3", &y_res3);
+    Tracks->Branch("x_res4", &x_res4);
+    Tracks->Branch("y_res4", &y_res4);
 
 //    for(auto& detector : get_detectors()) {
 //        LOG(DEBUG) << "Initialise for detector " + detector->getName();
@@ -63,9 +95,31 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
     x_dut = {};
     y_dut = {};
     for (auto& track : tracks) {
-        ROOT::Math::XYZPoint xyz_ref = track->getIntercept(z_ref);
-        ROOT::Math::XYZPoint xyz_dut = track->getIntercept(z_dut);
-        x_ref.push_back(xyz_ref.x()); y_ref.push_back(xyz_ref.y());
+        ROOT::Math::XYPoint xy_res0 = track->getLocalResidual(z_ref0_);
+        ROOT::Math::XYPoint xy_res1 = track->getLocalResidual(z_ref1_);
+        ROOT::Math::XYPoint xy_res2 = track->getLocalResidual(z_ref2_);
+        ROOT::Math::XYPoint xy_res3 = track->getLocalResidual(z_ref3_);
+        ROOT::Math::XYPoint xy_res4 = track->getLocalResidual(z_ref4_);
+        ROOT::Math::XYPoint xy_res5 = track->getLocalResidual(z_ref5_);
+        ROOT::Math::XYZPoint xyz_tel0 = track->getIntercept(z_ref0);
+        ROOT::Math::XYZPoint xyz_tel1 = track->getIntercept(z_ref1);
+        ROOT::Math::XYZPoint xyz_tel2 = track->getIntercept(z_ref2);
+        ROOT::Math::XYZPoint xyz_tel3 = track->getIntercept(z_ref3);
+        ROOT::Math::XYZPoint xyz_tel4 = track->getIntercept(z_ref4);
+        ROOT::Math::XYZPoint xyz_tel5 = track->getIntercept(z_ref5);
+        ROOT::Math::XYZPoint xyz_dut = track->get_position_outside_telescope(z_dut);
+        x_res0.push_back(xyz_res0.x()); y_res0.push_back(xyz_res0.y());
+        x_res1.push_back(xyz_res1.x()); y_res1.push_back(xyz_res1.y());
+        x_res2.push_back(xyz_res2.x()); y_res2.push_back(xyz_res2.y());
+        x_res3.push_back(xyz_res3.x()); y_res3.push_back(xyz_res3.y());
+        x_res4.push_back(xyz_res4.x()); y_res4.push_back(xyz_res4.y());
+        x_res5.push_back(xyz_res5.x()); y_res5.push_back(xyz_res5.y());
+        x_tel0.push_back(xyz_tel0.x()); y_tel0.push_back(xyz_tel0.y());
+        x_tel1.push_back(xyz_tel1.x()); y_tel1.push_back(xyz_tel1.y());
+        x_tel2.push_back(xyz_tel2.x()); y_tel2.push_back(xyz_tel2.y());
+        x_tel3.push_back(xyz_tel3.x()); y_tel3.push_back(xyz_tel3.y());
+        x_tel4.push_back(xyz_tel4.x()); y_tel4.push_back(xyz_tel4.y());
+        x_tel5.push_back(xyz_tel5.x()); y_tel5.push_back(xyz_tel5.y());
         x_dut.push_back(xyz_dut.x()); y_dut.push_back(xyz_dut.y());
     }
     
