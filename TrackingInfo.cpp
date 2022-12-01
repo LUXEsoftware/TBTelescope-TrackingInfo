@@ -90,32 +90,6 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
 //        std::cout <<"no track in this event"<<std::endl;
 //    }
     // Loop over all tracks inside this event
-    x_res0 = {};
-    y_res0 = {};
-    x_res1 = {};
-    y_res1 = {};
-    x_res2 = {};
-    y_res2 = {};
-    x_res3 = {};
-    y_res3 = {};
-    x_res4 = {};
-    y_res4 = {};
-    x_res5 = {};
-    y_res5 = {};
-    x_tel0 = {};
-    y_tel0 = {};
-    x_tel1 = {};
-    y_tel1 = {};
-    x_tel2 = {};
-    y_tel2 = {};
-    x_tel3 = {};
-    y_tel3 = {};
-    x_tel4 = {};
-    y_tel4 = {};
-    x_tel5 = {};
-    y_tel5 = {};
-    x_dut = {};
-    y_dut = {};
     for (auto& track : tracks) {
         ROOT::Math::XYPoint xy_res0 = track->getLocalResidual("ADENIUM_0");
         ROOT::Math::XYPoint xy_res1 = track->getLocalResidual("ADENIUM_1");
