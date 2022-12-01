@@ -81,7 +81,7 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
         ModuleError("No Clipboard event defined, cannot continue");
     }
 
-    auto tracks = clipboard->getData<Track>();
+    auto tracks = clipboard->getData<GblTrack>();
 //    // Skip event with 0 or more than 1 tracks
 //    if(tracks.size() != 1) {
 //        return StatusCode::Success;
@@ -90,30 +90,52 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
 //        std::cout <<"no track in this event"<<std::endl;
 //    }
     // Loop over all tracks inside this event
-    x_ref = {};
-    y_ref = {};
+    x_res0 = {};
+    y_res0 = {};
+    x_res1 = {};
+    y_res1 = {};
+    x_res2 = {};
+    y_res2 = {};
+    x_res3 = {};
+    y_res3 = {};
+    x_res4 = {};
+    y_res4 = {};
+    x_res5 = {};
+    y_res5 = {};
+    x_tel0 = {};
+    y_tel0 = {};
+    x_tel1 = {};
+    y_tel1 = {};
+    x_tel2 = {};
+    y_tel2 = {};
+    x_tel3 = {};
+    y_tel3 = {};
+    x_tel4 = {};
+    y_tel4 = {};
+    x_tel5 = {};
+    y_tel5 = {};
     x_dut = {};
     y_dut = {};
     for (auto& track : tracks) {
-        ROOT::Math::XYPoint xy_res0 = track->getLocalResidual(z_ref0_);
-        ROOT::Math::XYPoint xy_res1 = track->getLocalResidual(z_ref1_);
-        ROOT::Math::XYPoint xy_res2 = track->getLocalResidual(z_ref2_);
-        ROOT::Math::XYPoint xy_res3 = track->getLocalResidual(z_ref3_);
-        ROOT::Math::XYPoint xy_res4 = track->getLocalResidual(z_ref4_);
-        ROOT::Math::XYPoint xy_res5 = track->getLocalResidual(z_ref5_);
-        ROOT::Math::XYZPoint xyz_tel0 = track->getIntercept(z_ref0);
-        ROOT::Math::XYZPoint xyz_tel1 = track->getIntercept(z_ref1);
-        ROOT::Math::XYZPoint xyz_tel2 = track->getIntercept(z_ref2);
-        ROOT::Math::XYZPoint xyz_tel3 = track->getIntercept(z_ref3);
-        ROOT::Math::XYZPoint xyz_tel4 = track->getIntercept(z_ref4);
-        ROOT::Math::XYZPoint xyz_tel5 = track->getIntercept(z_ref5);
-        ROOT::Math::XYZPoint xyz_dut = track->get_position_outside_telescope(z_dut);
-        x_res0.push_back(xyz_res0.x()); y_res0.push_back(xyz_res0.y());
-        x_res1.push_back(xyz_res1.x()); y_res1.push_back(xyz_res1.y());
-        x_res2.push_back(xyz_res2.x()); y_res2.push_back(xyz_res2.y());
-        x_res3.push_back(xyz_res3.x()); y_res3.push_back(xyz_res3.y());
-        x_res4.push_back(xyz_res4.x()); y_res4.push_back(xyz_res4.y());
-        x_res5.push_back(xyz_res5.x()); y_res5.push_back(xyz_res5.y());
+        ROOT::Math::XYPoint xy_res0 = track->getLocalResidual("ADENIUM_0");
+        ROOT::Math::XYPoint xy_res1 = track->getLocalResidual("ADENIUM_1");
+        ROOT::Math::XYPoint xy_res2 = track->getLocalResidual("ADENIUM_2");
+        ROOT::Math::XYPoint xy_res3 = track->getLocalResidual("ADENIUM_3");
+        ROOT::Math::XYPoint xy_res4 = track->getLocalResidual("ADENIUM_4");
+        ROOT::Math::XYPoint xy_res5 = track->getLocalResidual("ADENIUM_5");
+        ROOT::Math::XYZPoint xyz_tel0 = track->getIntercept(z_ref0_);
+        ROOT::Math::XYZPoint xyz_tel1 = track->getIntercept(z_ref1_);
+        ROOT::Math::XYZPoint xyz_tel2 = track->getIntercept(z_ref2_);
+        ROOT::Math::XYZPoint xyz_tel3 = track->getIntercept(z_ref3_);
+        ROOT::Math::XYZPoint xyz_tel4 = track->getIntercept(z_ref4_);
+        ROOT::Math::XYZPoint xyz_tel5 = track->getIntercept(z_ref5_);
+        ROOT::Math::XYZPoint xyz_dut = track->getIntercept(z_dut_);
+        x_res0.push_back(xy_res0.x()); y_res0.push_back(xy_res0.y());
+        x_res1.push_back(xy_res1.x()); y_res1.push_back(xy_res1.y());
+        x_res2.push_back(xy_res2.x()); y_res2.push_back(xy_res2.y());
+        x_res3.push_back(xy_res3.x()); y_res3.push_back(xy_res3.y());
+        x_res4.push_back(xy_res4.x()); y_res4.push_back(xy_res4.y());
+        x_res5.push_back(xy_res5.x()); y_res5.push_back(xy_res5.y());
         x_tel0.push_back(xyz_tel0.x()); y_tel0.push_back(xyz_tel0.y());
         x_tel1.push_back(xyz_tel1.x()); y_tel1.push_back(xyz_tel1.y());
         x_tel2.push_back(xyz_tel2.x()); y_tel2.push_back(xyz_tel2.y());
