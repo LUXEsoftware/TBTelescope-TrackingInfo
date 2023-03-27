@@ -81,7 +81,7 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
         ModuleError("No Clipboard event defined, cannot continue");
     }
 
-    auto tracks = clipboard->getData<GblTrack>();
+    auto tracks = clipboard->getData<Track>();
 //    // Skip event with 0 or more than 1 tracks
 //    if(tracks.size() != 1) {
 //        return StatusCode::Success;
@@ -90,32 +90,32 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
 //        std::cout <<"no track in this event"<<std::endl;
 //    }
     // Loop over all tracks inside this event
-    x_res0 = {};
-    y_res0 = {};
-    x_res1 = {};
-    y_res1 = {};
-    x_res2 = {};
-    y_res2 = {};
-    x_res3 = {};
-    y_res3 = {};
-    x_res4 = {};
-    y_res4 = {};
-    x_res5 = {};
-    y_res5 = {};
-    x_tel0 = {};
-    y_tel0 = {};
-    x_tel1 = {};
-    y_tel1 = {};
-    x_tel2 = {};
-    y_tel2 = {};
-    x_tel3 = {};
-    y_tel3 = {};
-    x_tel4 = {};
-    y_tel4 = {};
-    x_tel5 = {};
-    y_tel5 = {};
-    x_dut = {};
-    y_dut = {};
+    x_res0.clear();
+    y_res0.clear();
+    x_res1.clear();
+    y_res1.clear();
+    x_res2.clear();
+    y_res2.clear();
+    x_res3.clear();
+    y_res3.clear();
+    x_res4.clear();
+    y_res4.clear();
+    x_res5.clear();
+    y_res5.clear();
+    x_tel0.clear();
+    y_tel0.clear();
+    x_tel1.clear();
+    y_tel1.clear();
+    x_tel2.clear();
+    y_tel2.clear();
+    x_tel3.clear();
+    y_tel3.clear();
+    x_tel4.clear();
+    y_tel4.clear();
+    x_tel5.clear();
+    y_tel5.clear();
+    x_dut.clear();
+    y_dut.clear();
     for (auto& track : tracks) {
         ROOT::Math::XYPoint xy_res0 = track->getLocalResidual("ADENIUM_0");
         ROOT::Math::XYPoint xy_res1 = track->getLocalResidual("ADENIUM_1");
