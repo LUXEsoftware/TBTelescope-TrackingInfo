@@ -59,7 +59,7 @@ namespace corryvreckan {
 //         double z_ref4_;
 //         double z_ref5_;
         TTree* Tracks;
-        std::vector<double> x_tel[6], y_tel[6];
+        std::vector<double> x_tel[6], y_tel[6], z_tel[6];
         std::vector<double> x_dut, y_dut;
         std::vector<double> x_res[6], y_res[6], x_uncertainty[6], y_uncertainty[6];
         std::vector<uint32_t> triggerId;

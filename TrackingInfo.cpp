@@ -122,11 +122,11 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
     ROOT::Math::XYZPoint xyz_dut;
     TMatrixD uncertainty[6];
     for (auto& track : tracks) {
-        auto planes = track.getPlanes();
+        auto planes = track->getPlanes();
         for (int i=0; i<6; i++){
             xy_res[i] = track->getLocalResidual(planes[i]->getName());
             xyz_tel[i] = track->getState(planes[i]->getName());
-            uncertainty[i] = track->getGlobalSateUncertainty(planes[i]->getName());
+            uncertainty[i] = track->getGlobalStateUncertainty(planes[i]->getName());
         }
         xyz_dut = track->getIntercept(z_dut_);
         for (int i=0; i<6; i++) {
