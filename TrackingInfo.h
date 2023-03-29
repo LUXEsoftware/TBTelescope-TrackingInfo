@@ -52,17 +52,20 @@ namespace corryvreckan {
     private:
         int m_eventNumber;
         double z_dut_;
-        double z_ref0_;
-        double z_ref1_;
-        double z_ref2_;
-        double z_ref3_;
-        double z_ref4_;
-        double z_ref5_;
+//         double z_ref0_;
+//         double z_ref1_;
+//         double z_ref2_;
+//         double z_ref3_;
+//         double z_ref4_;
+//         double z_ref5_;
         TTree* Tracks;
-        std::vector<double> x_tel0,y_tel0, x_tel1,y_tel1, x_tel2,y_tel2, x_tel3,y_tel3, x_tel4,y_tel4, x_tel5,y_tel5, x_dut,y_dut = {};
-        std::vector<double> x_res0,y_res0, x_res1,y_res1, x_res2,y_res2, x_res3,y_res3, x_res4,y_res4, x_res5,y_res5 = {};
-        std::vector<uint32_t> triggerId = {};
-        std::vector<double> triggerTimestamp = {};
+        std::vector<double> x_tel[6], y_tel[6];
+        std::vector<double> x_dut, y_dut;
+        std::vector<double> x_res[6], y_res[6], x_uncertainty[6], y_uncertainty[6];
+        std::vector<uint32_t> triggerId;
+        std::vector<double> triggerTimestamp;
+        std::vector<double> chi2;
+        std::vector<int> ndof;
 
     };
 
