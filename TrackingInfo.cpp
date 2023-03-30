@@ -111,7 +111,7 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
 //    }
     // Loop over all tracks inside this event
     for (uint i=0; i<6; i++){
-        x_tel[i].clear(); y_tel[i].clear();
+        x_tel[i].clear(); y_tel[i].clear(); z_tel[i].clear();
         x_res[i].clear(); y_res[i].clear();
         x_uncertainty[i].clear(); y_uncertainty[i].clear();
     }
@@ -120,23 +120,23 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
     ROOT::Math::XYPoint xy_res[6];
     ROOT::Math::XYZPoint xyz_tel[6];
     ROOT::Math::XYZPoint xyz_dut;
-    TMatrixD uncertainty[6];
+    TMatrixD uncertainty(3, 3);
     for (auto& track : tracks) {
         auto planes = track->getPlanes();
         auto plane = planes.begin();
         for (uint i=0; i<6; i++){
             xy_res[i] = track->getLocalResidual(plane->getName());
             xyz_tel[i] = track->getState(plane->getName());
-            uncertainty[i] = track->getGlobalStateUncertainty(plane->getName());
+            uncertainty = track->getGlobalStateUncertainty(plane->getName());
+            x_uncertainty[i].push_back(uncertainty(0, 0));
+            y_uncertainty[i].push_back(uncertainty(1, 1));
             plane++;
         }
-        xyz_dut = track->getIntercept(z_dut_);
+        xyz_dut = track->getInterceptTb22(z_dut_);
         for (uint i=0; i<6; i++) {
             x_res[i].push_back(xy_res[i].x()); y_res[i].push_back(xy_res[i].y());
             x_tel[i].push_back(xyz_tel[i].x()); y_tel[i].push_back(xyz_tel[i].y());
-                z_tel[i].push_back(xyz_tel[i].y());
-            x_uncertainty[i].push_back(uncertainty[i](0, 0));
-            y_uncertainty[i].push_back(uncertainty[i](1, 1));
+                z_tel[i].push_back(xyz_tel[i].z());
         }
         x_dut.push_back(xyz_dut.x()); y_dut.push_back(xyz_dut.y());
         chi2.push_back(track->getChi2()); ndof.push_back(track->getNdof());

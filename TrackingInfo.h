@@ -65,7 +65,7 @@ namespace corryvreckan {
         std::vector<uint32_t> triggerId;
         std::vector<double> triggerTimestamp;
         std::vector<double> chi2;
-        std::vector<int> ndof;
+        std::vector<uint> ndof;
 
     };
 
