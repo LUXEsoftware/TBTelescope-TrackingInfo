@@ -43,6 +43,9 @@ void TrackingInfo::initialize() {
     Tracks->Branch("y_dut", &y_dut);
     Tracks->Branch("chi2", &chi2);
     Tracks->Branch("ndof", &ndof);
+    Tracks->Branch("num_clusters",  &num_clusters);
+    Tracks->Branch("num_clusterst", &num_tclusters);
+    Tracks->Branch("num_clustersa", &num_aclusters);
     Tracks->Branch("x_tel0", &x_tel[0]);
     Tracks->Branch("y_tel0", &y_tel[0]);
     Tracks->Branch("z_tel0", &z_tel[0]);
@@ -140,6 +143,9 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
         }
         x_dut.push_back(xyz_dut.x()); y_dut.push_back(xyz_dut.y());
         chi2.push_back(track->getChi2()); ndof.push_back(track->getNdof());
+        num_clusters.push_back(track.getNClusters())
+        num_tclusters.push_back(track.getClusters().size())
+        num_aclusters.push_back(track.getAssociatedClusters().size())
     }
     
     triggerId.clear();

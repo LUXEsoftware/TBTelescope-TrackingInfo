@@ -66,6 +66,10 @@ namespace corryvreckan {
         std::vector<double> triggerTimestamp;
         std::vector<double> chi2;
         std::vector<uint> ndof;
+        std::vector<uint> num_clusters;
+        std::vector<uint> num_tclusters;
+        std::vector<uint> num_aclusters;
+        
 
     };
 
