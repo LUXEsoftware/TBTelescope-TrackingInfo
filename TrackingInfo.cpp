@@ -44,7 +44,7 @@ void TrackingInfo::initialize() {
     Tracks->Branch("chi2", &chi2);
     Tracks->Branch("ndof", &ndof);
     Tracks->Branch("num_clusters",  &num_clusters);
-    Tracks->Branch("num_planes",  &num_planes);
+    // Tracks->Branch("num_planes",  &num_planes);
     Tracks->Branch("x_tel0", &x_tel[0]);
     Tracks->Branch("y_tel0", &y_tel[0]);
     Tracks->Branch("z_tel0", &z_tel[0]);
@@ -119,34 +119,36 @@ StatusCode TrackingInfo::run(const std::shared_ptr<Clipboard>& clipboard) {
     }
     x_dut.clear(); y_dut.clear();
     chi2.clear(); ndof.clear();
-    num_clusters.clear(); num_planes.clear();
+    num_clusters.clear(); // num_planes.clear();
     ROOT::Math::XYPoint xy_res[6];
     ROOT::Math::XYZPoint xyz_tel[6];
     ROOT::Math::XYZPoint xyz_dut;
     TMatrixD uncertainty(3, 3);
     for (auto& track : tracks) {
+        uint num_cluster = track->getNClusters();
         auto planes = track->getPlanes();
         auto plane = planes.begin();
         uint num_plane = planes.size();
-        num_planes.push_back(num_plane);
+        // num_planes.push_back(num_plane);
         for (uint i=0; i<num_plane; i++){
-            xy_res[i] = track->getLocalResidual(plane->getName());
-            xyz_tel[i] = track->getState(plane->getName());
-            uncertainty = track->getGlobalStateUncertainty(plane->getName());
-            x_uncertainty[i].push_back(uncertainty(0, 0));
-            y_uncertainty[i].push_back(uncertainty(1, 1));
+            if (plane->hasCluster()){
+                xy_res[i] = track->getLocalResidual(plane->getName());
+                xyz_tel[i] = track->getState(plane->getName());
+                uncertainty = track->getGlobalStateUncertainty(plane->getName());
+                x_uncertainty[i].push_back(uncertainty(0, 0));
+                y_uncertainty[i].push_back(uncertainty(1, 1));
+
+                x_res[i].push_back(xy_res[i].x()); y_res[i].push_back(xy_res[i].y());
+                x_tel[i].push_back(xyz_tel[i].x()); y_tel[i].push_back(xyz_tel[i].y());
+                z_tel[i].push_back(xyz_tel[i].z());
+            }
             plane++;
         }
         xyz_dut = track->getIntercept(z_dut_);
         //xyz_dut = track->getInterceptTb22(z_dut_);
-        for (uint i=0; i<num_plane; i++) {
-            x_res[i].push_back(xy_res[i].x()); y_res[i].push_back(xy_res[i].y());
-            x_tel[i].push_back(xyz_tel[i].x()); y_tel[i].push_back(xyz_tel[i].y());
-                z_tel[i].push_back(xyz_tel[i].z());
-        }
         x_dut.push_back(xyz_dut.x()); y_dut.push_back(xyz_dut.y());
         chi2.push_back(track->getChi2()); ndof.push_back(track->getNdof());
-        num_clusters.push_back(track->getNClusters());
+        num_clusters.push_back(num_cluster);
     }
     
     triggerId.clear();
